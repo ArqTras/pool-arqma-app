@@ -1,15 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '28.0.1'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId 'com.arqma.poolmonitor'
         minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 20
-        versionName  '1.1 Arqma Pool Monitor'
+        targetSdkVersion 28
+        versionCode 28
+        versionName  '1.2 Arqma Pool Monitor'
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        renderscriptTargetApi 21
+        renderscriptSupportModeEnabled true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -17,16 +20,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:23.+'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
-    implementation 'com.android.support:design:23.+'
-    implementation 'com.android.support:support-v4:23.+'
-    androidTestImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.0-alpha2'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:support-compat:28.0.0'
+    testImplementation 'junit:junit:4.12'
+
 }
