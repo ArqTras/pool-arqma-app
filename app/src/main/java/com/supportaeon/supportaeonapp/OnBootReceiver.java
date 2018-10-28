@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 /**
  * Created by romeu on 15/01/2018.
  */
@@ -17,7 +19,7 @@ public class OnBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED") ){
+        if (Objects.requireNonNull(intent.getAction()).equals("android.intent.action.BOOT_COMPLETED") ){
 
 
 
@@ -27,7 +29,7 @@ public class OnBootReceiver extends BroadcastReceiver {
 
     }
 
-    protected void iniciarNotifications(Context context)
+    private void iniciarNotifications(Context context)
     {
 
 
@@ -42,7 +44,7 @@ public class OnBootReceiver extends BroadcastReceiver {
         }
         else
         {
-            SharedPreferences prefs = context.getSharedPreferences("SupportAeonAppKeys", context.MODE_PRIVATE);
+            SharedPreferences prefs = context.getSharedPreferences("SupportAeonAppKeys", Context.MODE_PRIVATE);
 
             int minutes = prefs.getInt("updateInterval", 0);
 
@@ -73,11 +75,11 @@ public class OnBootReceiver extends BroadcastReceiver {
                     break;
             }
 
-            AlarmManager manager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+            AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, resultIntent, 0);
 
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+            Objects.requireNonNull(manager).setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
 
             Toast.makeText(context, "ArQmA.com server check started every " +  txt, Toast.LENGTH_LONG).show();
         }

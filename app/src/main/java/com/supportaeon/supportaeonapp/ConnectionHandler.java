@@ -11,16 +11,16 @@ import java.util.ArrayList;
  * Created by romeu on 15/01/2018.
  */
 
-public class ConnectionHandler extends AsyncTask<String, Void, String> {
-    public static String baseSiteUrl = "https://api.arqma.com/";
+class ConnectionHandler extends AsyncTask<String, Void, String> {
+    public static final String baseSiteUrl = "https://api.arqma.com/";
 
-    ArrayList<ResponseListener> listeners = new ArrayList<ResponseListener> ();
+    private final ArrayList<ResponseListener> listeners = new ArrayList<>();
 
     private static String getContentFromServer(String path)
     {
 
 
-        String tempString = "";
+        StringBuilder tempString = new StringBuilder();
 
         try
         {
@@ -31,14 +31,14 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
             while ((str = in.readLine()) != null)
             {
 
-                tempString = tempString + str;
+                tempString.append(str);
             }
             in.close();
         } catch (Exception e) {
             return "false";
         }
 
-        return tempString;
+        return tempString.toString();
     }
 
 

@@ -23,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -31,16 +33,16 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onResume();
 
-        TextView textViewError = (TextView) findViewById(R.id.textViewError);
+        TextView textViewError = findViewById(R.id.textViewError);
         textViewError.setVisibility(View.INVISIBLE);
-        RelativeLayout LayoutLoading = (RelativeLayout) findViewById(R.id.LayoutLoading);
+        RelativeLayout LayoutLoading = findViewById(R.id.LayoutLoading);
         LayoutLoading.setVisibility(View.VISIBLE);
-        ProgressBar progressBarLoading = (ProgressBar) findViewById(R.id.progressBarLoading);
+        ProgressBar progressBarLoading = findViewById(R.id.progressBarLoading);
         progressBarLoading.setVisibility(View.VISIBLE);
 
         errorFound = false;
 
-        WebView myWebView = (WebView) findViewById(R.id.myWebView);
+        WebView myWebView = findViewById(R.id.myWebView);
         //loadPage(this);
         myWebView.reload();
     }
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         /*
@@ -68,22 +70,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public  boolean isPageLoad = true;
-    public boolean errorFound = false;
+    private boolean isPageLoad = true;
+    private boolean errorFound = false;
 
-    protected void loadPage(final Context context)
+    private void loadPage(final Context context)
     {
 
 
-        TextView textViewError = (TextView) findViewById(R.id.textViewError);
+        TextView textViewError = findViewById(R.id.textViewError);
         textViewError.setVisibility(View.INVISIBLE);
 
-        ProgressBar progressBarLoading = (ProgressBar) findViewById(R.id.progressBarLoading);
+        ProgressBar progressBarLoading = findViewById(R.id.progressBarLoading);
         progressBarLoading.setVisibility(View.VISIBLE);
 
         errorFound = false;
 
-        final WebView myWebView = (WebView) findViewById(R.id.myWebView);
+        final WebView myWebView = findViewById(R.id.myWebView);
 
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -177,14 +179,14 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!isPageLoad){
                     if(!errorFound) {
-                        RelativeLayout LayoutLoading = (RelativeLayout) findViewById(R.id.LayoutLoading);
+                        RelativeLayout LayoutLoading = findViewById(R.id.LayoutLoading);
                         LayoutLoading.setVisibility(View.GONE);
                     }
                     else
                         {
-                            TextView textViewError = (TextView) findViewById(R.id.textViewError);
+                            TextView textViewError = findViewById(R.id.textViewError);
                             textViewError.setVisibility(View.VISIBLE);
-                            ProgressBar progressBarLoading = (ProgressBar) findViewById(R.id.progressBarLoading);
+                            ProgressBar progressBarLoading = findViewById(R.id.progressBarLoading);
                             progressBarLoading.setVisibility(View.INVISIBLE);
                         }
                 }
@@ -206,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        RelativeLayout LayoutLoading = (RelativeLayout) findViewById(R.id.LayoutLoading);
+        RelativeLayout LayoutLoading = findViewById(R.id.LayoutLoading);
         LayoutLoading.setVisibility(View.VISIBLE);
         myWebView.loadUrl("https://pool.arqma.com/#/dashboard");
 
@@ -214,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void iniciarNotifications(Context context)
+    private void iniciarNotifications(Context context)
     {
 
 
@@ -260,11 +262,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            AlarmManager manager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+            AlarmManager manager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, resultIntent, 0);
 
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+            Objects.requireNonNull(manager).setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
 
             Toast.makeText(context, "pool.ArQmA.com server check started every " +  txt, Toast.LENGTH_LONG).show();
         }
@@ -294,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Intent k = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(k);
-            } catch(Exception e) {
+            } catch(Exception ignored) {
             }
         }
 
@@ -303,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = Uri.parse("https://pool.arqma.com/#/androidapp"); // missing 'http://' will cause crashed
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
-            } catch(Exception e) {
+            } catch(Exception ignored) {
             }
         }
 
@@ -312,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = Uri.parse("https://pool.arqma.com"); // missing 'http://' will cause crashed
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
-            } catch(Exception e) {
+            } catch(Exception ignored) {
             }
         }
 

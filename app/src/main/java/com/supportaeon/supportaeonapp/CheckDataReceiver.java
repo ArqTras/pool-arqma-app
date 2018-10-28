@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 /**
  * Created by ArqTras on 05/09/2018.
@@ -25,7 +26,7 @@ public class CheckDataReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        SharedPreferences prefs = context.getSharedPreferences("SupportAeonAppKeys", context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("SupportAeonAppKeys", Context.MODE_PRIVATE);
 
 
 
@@ -143,7 +144,7 @@ public class CheckDataReceiver extends BroadcastReceiver {
                         }
                     }
 
-                    SharedPreferences.Editor editor = context.getSharedPreferences("SupportAeonAppKeys", context.MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = context.getSharedPreferences("SupportAeonAppKeys", Context.MODE_PRIVATE).edit();
                     editor.remove("OldBlocks");
                     editor.putString("OldBlocks", str);
                     editor.apply();
@@ -153,7 +154,7 @@ public class CheckDataReceiver extends BroadcastReceiver {
 
 
                 }
-                catch (Exception ex)
+                catch (Exception ignored)
                 {
 
                 }
@@ -245,13 +246,13 @@ public class CheckDataReceiver extends BroadcastReceiver {
 
                     }
 
-                    SharedPreferences.Editor editor = context.getSharedPreferences("SupportAeonAppKeys", context.MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = context.getSharedPreferences("SupportAeonAppKeys", Context.MODE_PRIVATE).edit();
                     editor.remove("lastPaymentsFound");
                     editor.putString("lastPaymentsFound", str);
                     editor.apply();
 
                 }
-                catch (Exception ex)
+                catch (Exception ignored)
                 {
 
                 }
@@ -332,13 +333,13 @@ public class CheckDataReceiver extends BroadcastReceiver {
 
                     }
 
-                    SharedPreferences.Editor editor = context.getSharedPreferences("SupportAeonAppKeys", context.MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = context.getSharedPreferences("SupportAeonAppKeys", Context.MODE_PRIVATE).edit();
                     editor.remove("lastBlocksFound");
                     editor.putString("lastBlocksFound", str);
                     editor.apply();
 
                 }
-                catch (Exception ex)
+                catch (Exception ignored)
                 {
 
                 }
@@ -352,9 +353,9 @@ public class CheckDataReceiver extends BroadcastReceiver {
 
     }
 
-    public UserValues localUserValues = null;
+    private UserValues localUserValues = null;
 
-    public void userStats(String wallet)
+    private void userStats(String wallet)
     {
         String[] parms = { ConnectionHandler.baseSiteUrl + "miner/" + wallet + "/Stats"};
 
@@ -381,7 +382,7 @@ public class CheckDataReceiver extends BroadcastReceiver {
 
                     localUserValues = uservalues;
                 }
-                catch (Exception ex)
+                catch (Exception ignored)
                 {
 
                 }
@@ -398,9 +399,9 @@ public class CheckDataReceiver extends BroadcastReceiver {
 
     }
 
-    public Double networkDifficulty = 0.0;
+    private Double networkDifficulty = 0.0;
 
-    public void networkStats()
+    private void networkStats()
     {
         String[] parms = { ConnectionHandler.baseSiteUrl + "network/stats"};
 
@@ -420,7 +421,7 @@ public class CheckDataReceiver extends BroadcastReceiver {
                     networkDifficulty = jsonValues.getDouble("difficulty");
 
                 }
-                catch (Exception ex)
+                catch (Exception ignored)
                 {
 
                 }
@@ -437,7 +438,7 @@ public class CheckDataReceiver extends BroadcastReceiver {
 
     }
 
-    public void ongoingNotification(final Context context, final SharedPreferences prefs)
+    private void ongoingNotification(final Context context, final SharedPreferences prefs)
     {
 
         String[] parms = { ConnectionHandler.baseSiteUrl + "pool/stats/pplns"};
@@ -515,7 +516,7 @@ public class CheckDataReceiver extends BroadcastReceiver {
                     sendNotification(4, poolText, userText, context, true, R.mipmap.ic_launcher);
 
                 }
-                catch (Exception ex)
+                catch (Exception ignored)
                 {
 
                 }
@@ -539,7 +540,7 @@ public class CheckDataReceiver extends BroadcastReceiver {
 
 
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context);
+                new NotificationCompat.Builder(context, msg);
 
         mBuilder.setSmallIcon(icon);
         mBuilder.setContentTitle(title);
@@ -609,7 +610,7 @@ public class CheckDataReceiver extends BroadcastReceiver {
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
-        mNotificationManager.notify(id, mBuilder.build());
+        Objects.requireNonNull(mNotificationManager).notify(id, mBuilder.build());
 
     }
 

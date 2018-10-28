@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -24,10 +26,10 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSettings);
+        Toolbar toolbar = findViewById(R.id.toolbarSettings);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         SharedPreferences prefs = getSharedPreferences("SupportAeonAppKeys", MODE_PRIVATE);
@@ -39,11 +41,11 @@ public class SettingsActivity extends AppCompatActivity {
         int updateInterval = prefs.getInt("updateInterval", 0);
 
 
-        EditText editTextAddress = (EditText) findViewById(R.id.editTextAddress);
-        Switch switchNewBlockFound = (Switch) findViewById(R.id.switchNewBlockFound);
-        Switch switchPayment = (Switch) findViewById(R.id.switchPayment);
-        Switch switchBlockUnlocked = (Switch) findViewById(R.id.switchBlockUnlocked);
-        Switch switchStatus = (Switch) findViewById(R.id.switchStatus);
+        EditText editTextAddress = findViewById(R.id.editTextAddress);
+        Switch switchNewBlockFound = findViewById(R.id.switchNewBlockFound);
+        Switch switchPayment = findViewById(R.id.switchPayment);
+        Switch switchBlockUnlocked = findViewById(R.id.switchBlockUnlocked);
+        Switch switchStatus = findViewById(R.id.switchStatus);
 
         editTextAddress.setText(restoredWallet);
         switchNewBlockFound.setChecked(notificationBlock);
@@ -52,7 +54,7 @@ public class SettingsActivity extends AppCompatActivity {
         switchStatus.setChecked(statusNotification);
 
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinnerInterval);
+        Spinner spinner = findViewById(R.id.spinnerInterval);
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.interval_array, android.R.layout.simple_spinner_item);
@@ -64,16 +66,16 @@ public class SettingsActivity extends AppCompatActivity {
         spinner.setSelection(updateInterval);
 
 
-        Button buttonSave = (Button) findViewById(R.id.buttonSave);
+        Button buttonSave = findViewById(R.id.buttonSave);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                EditText editTextAddress = (EditText) findViewById(R.id.editTextAddress);
-                Switch switchNewBlockFound = (Switch) findViewById(R.id.switchNewBlockFound);
-                Switch switchPayment = (Switch) findViewById(R.id.switchPayment);
-                Switch switchBlockUnlocked = (Switch) findViewById(R.id.switchBlockUnlocked);
-                Switch switchStatus = (Switch) findViewById(R.id.switchStatus);
-                Spinner spinner = (Spinner) findViewById(R.id.spinnerInterval);
+                EditText editTextAddress = findViewById(R.id.editTextAddress);
+                Switch switchNewBlockFound = findViewById(R.id.switchNewBlockFound);
+                Switch switchPayment = findViewById(R.id.switchPayment);
+                Switch switchBlockUnlocked = findViewById(R.id.switchBlockUnlocked);
+                Switch switchStatus = findViewById(R.id.switchStatus);
+                Spinner spinner = findViewById(R.id.spinnerInterval);
 
                 SharedPreferences.Editor editor = getSharedPreferences("SupportAeonAppKeys", MODE_PRIVATE).edit();
                 editor.putString("WalletAddress", editTextAddress.getText().toString());
@@ -92,10 +94,10 @@ public class SettingsActivity extends AppCompatActivity {
                     {
                         NotificationManager mNotificationManager =
                                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                        mNotificationManager.cancel(4);
+                        Objects.requireNonNull(mNotificationManager).cancel(4);
 
                     }
-                    catch (Exception ex)
+                    catch (Exception ignored)
                     {
 
 
@@ -113,10 +115,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    protected void iniciarNotifications(Context context, int minutes)
+    private void iniciarNotifications(Context context, int minutes)
     {
 
-        AlarmManager manager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        AlarmManager manager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
         Intent resultIntent = new Intent(context, CheckDataReceiver.class);
         boolean alarmUp = (PendingIntent.getBroadcast(context, 0,
@@ -156,7 +158,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, resultIntent, 0);
 
-            manager.cancel(pendingIntent);
+            Objects.requireNonNull(manager).cancel(pendingIntent);
 
             pendingIntent.cancel();
 
@@ -173,7 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, resultIntent, 0);
 
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+            Objects.requireNonNull(manager).setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
 
             Toast.makeText(context, "Settings Saved. Server check started every " +  txt, Toast.LENGTH_LONG).show();
         }
